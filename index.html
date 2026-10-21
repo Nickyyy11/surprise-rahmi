@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#170e35">
+<meta name="description" content="Sebuah kejutan kecil dari pangeranmu untuk Rahmi.">
+<title>Kerajaan Rahasia ✨</title>
+<style>
+:root{--night:#170e35;--plum:#342052;--pink:#ffb8d2;--gold:#ffd778;--cream:#fff7ef;--muted:#d8cce8}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--cream);font-family:Georgia,"Times New Roman",serif;background:radial-gradient(ellipse at 50% 0%,#56366d 0%,#24163f 42%,#100b28 100%);min-height:100svh;overflow-x:hidden}
+button,input{font:inherit}
+button{cursor:pointer}
+#stars,.sparkles{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.star{position:absolute;color:#fff1b7;opacity:.7;animation:twinkle 2.6s infinite alternate}
+@keyframes twinkle{from{opacity:.2;transform:scale(.7)}to{opacity:1;transform:scale(1.2)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes glow{0%,100%{filter:drop-shadow(0 0 4px #ffd77866)}50%{filter:drop-shadow(0 0 13px #ffd778)}}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+main{position:relative;z-index:1;width:100%;max-width:760px;margin:auto;padding:22px 17px 42px}
+.screen{display:none;min-height:calc(100svh - 30px);align-items:center;justify-content:center;flex-direction:column;text-align:center;animation:rise .7s ease both}
+.screen.active{display:flex}
+.eyebrow{font-family:system-ui,sans-serif;font-size:.72rem;letter-spacing:.23em;text-transform:uppercase;color:var(--gold)}
+h1,h2,p{margin-top:0}
+h1{font-size:clamp(2rem,9vw,3.5rem);line-height:1.06;margin:13px 0;color:#fff3d6;text-shadow:0 4px 25px #ffb8d244}
+h2{font-size:clamp(1.6rem,6vw,2.3rem);color:#ffe9bc;margin-bottom:12px}
+p{line-height:1.65;color:#e7dcef}
+.castle{width:min(82vw,330px);height:auto;margin:4px auto 18px;animation:float 4s ease-in-out infinite;filter:drop-shadow(0 10px 28px #09051c88)}
+.panel{width:100%;max-width:430px;padding:24px 20px;border:1px solid #ffffff24;border-radius:24px;background:linear-gradient(145deg,#ffffff12,#ffffff06);box-shadow:0 20px 55px #08031c55;backdrop-filter:blur(10px)}
+.field{text-align:left;margin:15px 0}
+label{display:block;font-family:system-ui,sans-serif;font-size:.84rem;color:#f3dfef;margin:0 0 7px 3px}
+input{width:100%;border:1px solid #ffffff38;border-radius:13px;padding:14px 13px;background:#160e2d;color:white;outline:none;min-height:48px}
+input:focus{border-color:var(--gold);box-shadow:0 0 0 3px #ffd77820}
+input::placeholder{color:#a99abf}
+.date-row{display:grid;grid-template-columns:.85fr 1.35fr 1fr;gap:8px}
+.date-row select{width:100%;min-width:0;min-height:48px;padding:12px 8px;border:1px solid #ffffff38;border-radius:13px;background:#160e2d;color:#fff;outline:none;font:inherit;font-size:.88rem}
+.date-row select:focus{border-color:var(--gold);box-shadow:0 0 0 3px #ffd77820}
+.date-row option{background:#160e2d;color:#fff}
+.btn{border:0;border-radius:999px;padding:14px 22px;font-weight:bold;color:#2b173d;background:linear-gradient(135deg,#ffe8a4,#ffb8d2);box-shadow:0 8px 24px #ffb8d222;transition:transform .2s,filter .2s}
+.btn:active{transform:scale(.97)}
+.btn:focus-visible,.treasure:focus-visible{outline:3px solid white;outline-offset:3px}
+.btn.secondary{background:#ffffff12;color:#fff0d0;border:1px solid #ffffff30;box-shadow:none}
+.error{display:none;margin:13px 0 0;color:#ffc3d3;font-size:.92rem;line-height:1.5}
+.error.show{display:block;animation:rise .25s ease}
+.tiny{font: .78rem/1.5 system-ui,sans-serif;color:#bfb1d5;margin:14px 0 0}
+.crown{font-size:2rem;animation:glow 2.8s infinite}
+.progress-wrap{width:100%;max-width:490px;margin:14px auto 24px}
+.progress-label{display:flex;justify-content:space-between;font: .8rem system-ui,sans-serif;color:#ddcde9;margin-bottom:8px}
+.progress{height:7px;border-radius:99px;background:#ffffff1b;overflow:hidden}
+.progress>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffb8d2,#ffd778);transition:width .4s;border-radius:99px}
+.treasure-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;width:100%;margin:0 auto 20px}
+.treasure{position:relative;min-height:112px;padding:13px 5px 11px;border:1px solid #ffffff22;border-radius:19px;background:linear-gradient(150deg,#ffffff13,#ffffff05);color:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;transition:transform .2s,border-color .2s,background .2s}
+.treasure:active{transform:scale(.96)}
+.treasure .emoji{font-size:2rem;filter:drop-shadow(0 4px 9px #0004)}
+.treasure .treasure-name{font: .76rem system-ui,sans-serif;line-height:1.2}
+.treasure.opened{border-color:#ffd77880;background:linear-gradient(150deg,#ffd7781c,#ffffff08)}
+.treasure.opened:after{content:"✓";position:absolute;top:6px;right:9px;color:var(--gold);font: .8rem system-ui,sans-serif}
+.secret{display:none;margin:12px auto 0;max-width:420px;width:100%;padding:20px 14px 23px;border:1px solid #ffd77888;border-radius:23px;background:radial-gradient(ellipse at top,#ffd77824,#ffffff07);animation:rise .7s ease}
+.secret.visible{display:block}
+.heart-btn{display:grid;place-items:center;width:82px;height:82px;margin:0 auto 12px;border:1px solid #ffe9a8;border-radius:50%;background:radial-gradient(circle,#ffdf7d,#b77a2e);font-size:2.7rem;box-shadow:0 0 30px #ffd77855;animation:glow 2s infinite}
+.heart-btn span{filter:drop-shadow(0 2px 3px #6e3a26)}
+.modal{position:fixed;inset:0;z-index:5;display:none;align-items:center;justify-content:center;padding:18px;background:#09051dcc;backdrop-filter:blur(8px)}
+.modal.show{display:flex}
+.modal-card{width:100%;max-width:440px;max-height:85svh;overflow:auto;position:relative;padding:30px 22px 24px;border:1px solid #ffd77855;border-radius:25px;background:linear-gradient(150deg,#422a5b,#1b1237);box-shadow:0 25px 80px #0008;animation:rise .35s ease}
+.modal-icon{font-size:2.8rem;margin-bottom:9px;animation:float 3s infinite}
+.modal-card h2{font-size:1.75rem}
+.modal-card p{white-space:pre-line}
+.close{position:absolute;right:13px;top:12px;width:37px;height:37px;border-radius:50%;border:1px solid #ffffff30;background:#ffffff12;color:white;font-size:1.3rem}
+footer{font: .72rem system-ui,sans-serif;color:#a99abf;text-align:center;margin-top:28px}
+.confetti{position:fixed;top:-20px;z-index:9;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110svh) rotate(720deg);opacity:.1}}
+@media(min-width:600px){main{padding-top:28px}.treasure-grid{gap:15px}.treasure{min-height:128px}.treasure .emoji{font-size:2.3rem}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="stars" aria-hidden="true"></div>
+<main>
+  <section id="welcome" class="screen active">
+    <div class="eyebrow">sebuah kisah kecil untuk seseorang yang istimewa</div>
+    <svg class="castle" viewBox="0 0 340 245" role="img" aria-label="Ilustrasi kerajaan ajaib">
+      <defs><linearGradient id="stone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f6c9df"/><stop offset="1" stop-color="#9d76c1"/></linearGradient><linearGradient id="roof" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffd985"/><stop offset="1" stop-color="#d77fae"/></linearGradient></defs>
+      <circle cx="170" cy="112" r="94" fill="#f5d8ff" opacity=".08"/><circle cx="170" cy="112" r="75" fill="none" stroke="#ffe7a5" stroke-opacity=".25"/>
+      <path d="M65 210V100H112V67H145V110H195V67H228V100H275V210Z" fill="url(#stone)" stroke="#ffe7f4" stroke-width="2"/>
+      <path d="M52 211V88H88V211M252 211V88H288V211" fill="url(#stone)" stroke="#ffe7f4" stroke-width="2"/>
+      <path d="M45 90L70 36L95 90ZM245 90L270 36L295 90ZM103 70L128 19L153 70ZM187 70L212 19L237 70Z" fill="url(#roof)" stroke="#ffe7c0" stroke-width="2"/>
+      <path d="M151 210V160Q170 135 189 160V210" fill="#342052" stroke="#ffe7c0" stroke-width="2"/>
+      <g fill="#fff0bd"><rect x="66" y="111" width="9" height="20" rx="4"/><rect x="266" y="111" width="9" height="20" rx="4"/><rect x="119" y="91" width="9" height="20" rx="4"/><rect x="212" y="91" width="9" height="20" rx="4"/><rect x="83" y="148" width="10" height="22" rx="5"/><rect x="247" y="148" width="10" height="22" rx="5"/><rect x="127" y="130" width="10" height="22" rx="5"/><rect x="203" y="130" width="10" height="22" rx="5"/></g>
+      <path d="M170 12V1M165 6H175" stroke="#ffe7a5" stroke-width="2"/><path d="M70 30l-5 -8M270 30l5 -8" stroke="#ffe7a5" stroke-width="2"/>
+      <path d="M170 5l4 7h-8z" fill="#ffe7a5"/>
+      <path d="M30 211Q170 197 310 211" fill="none" stroke="#ffe7a5" stroke-opacity=".65" stroke-width="2"/>
+      <g fill="#ffd778"><circle cx="32" cy="72" r="2.5"/><circle cx="308" cy="65" r="2.5"/><circle cx="105" cy="15" r="2"/><circle cx="235" cy="14" r="2"/><path d="M25 145l3 6 6 3-6 3-3 6-3-6-6-3 6-3z"/><path d="M312 143l3 6 6 3-6 3-3 6-3-6-6-3 6-3z"/></g>
+    </svg>
+    <h1>Selamat Datang,<br>Calon Tuan Putri</h1>
+    <p>Di sebuah kerajaan yang menyimpan kejutan<br>khusus untuk seseorang yang paling istimewa.</p>
+    <div class="panel">
+      <div class="crown">♕</div>
+      <h2 style="font-size:1.55rem;margin-top:8px">Kerajaan XXX</h2>
+      <p style="font-size:.93rem">Sebelum gerbang dibuka, izinkan kami memastikan bahwa yang datang adalah tuan putri yang kami tunggu.</p>
+      <form id="entryForm">
+        <div class="field"><label for="fullName">Nama lengkapmu</label><input id="fullName" name="fullName" placeholder="Masukkan nama lengkap" autocomplete="name" required></div>
+        <div class="field">
+          <label>Tanggal lahirmu</label>
+          <div class="date-row">
+            <select id="birthDay" aria-label="Tanggal lahir" required>
+              <option value="">Tanggal</option>
+<option value="01">1</option><option value="02">2</option><option value="03">3</option><option value="04">4</option><option value="05">5</option><option value="06">6</option><option value="07">7</option><option value="08">8</option><option value="09">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option>
+            </select>
+            <select id="birthMonth" aria-label="Bulan lahir" required>
+              <option value="">Bulan</option>
+              <option value="01">Januari</option><option value="02">Februari</option>
+              <option value="03">Maret</option><option value="04">April</option>
+              <option value="05">Mei</option><option value="06">Juni</option>
+              <option value="07">Juli</option><option value="08">Agustus</option>
+              <option value="09">September</option><option value="10">Oktober</option>
+              <option value="11">November</option><option value="12">Desember</option>
+            </select>
+            <select id="birthYear" aria-label="Tahun lahir" required>
+              <option value="">Tahun</option>
+<option value="2015">2015</option><option value="2014">2014</option><option value="2013">2013</option><option value="2012">2012</option><option value="2011">2011</option><option value="2010">2010</option><option value="2009">2009</option><option value="2008">2008</option><option value="2007">2007</option><option value="2006">2006</option><option value="2005">2005</option><option value="2004">2004</option><option value="2003">2003</option><option value="2002">2002</option><option value="2001">2001</option><option value="2000">2000</option><option value="1999">1999</option><option value="1998">1998</option><option value="1997">1997</option><option value="1996">1996</option><option value="1995">1995</option><option value="1994">1994</option><option value="1993">1993</option><option value="1992">1992</option><option value="1991">1991</option><option value="1990">1990</option><option value="1989">1989</option><option value="1988">1988</option><option value="1987">1987</option><option value="1986">1986</option><option value="1985">1985</option><option value="1984">1984</option><option value="1983">1983</option><option value="1982">1982</option><option value="1981">1981</option><option value="1980">1980</option><option value="1979">1979</option><option value="1978">1978</option><option value="1977">1977</option><option value="1976">1976</option><option value="1975">1975</option><option value="1974">1974</option><option value="1973">1973</option><option value="1972">1972</option><option value="1971">1971</option><option value="1970">1970</option><option value="1969">1969</option><option value="1968">1968</option><option value="1967">1967</option><option value="1966">1966</option><option value="1965">1965</option><option value="1964">1964</option><option value="1963">1963</option><option value="1962">1962</option><option value="1961">1961</option><option value="1960">1960</option><option value="1959">1959</option><option value="1958">1958</option><option value="1957">1957</option><option value="1956">1956</option><option value="1955">1955</option><option value="1954">1954</option><option value="1953">1953</option><option value="1952">1952</option><option value="1951">1951</option><option value="1950">1950</option><option value="1949">1949</option><option value="1948">1948</option><option value="1947">1947</option><option value="1946">1946</option><option value="1945">1945</option><option value="1944">1944</option><option value="1943">1943</option><option value="1942">1942</option><option value="1941">1941</option><option value="1940">1940</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn" type="submit" style="width:100%">Buka Gerbang Kerajaan ✨</button>
+        <p id="error" class="error" role="alert">Maaf, kamu bukan tuan putri kami. Maka kamu tidak diizinkan masuk.</p>
+      </form>
+      <p class="tiny">Petunjuk: kerajaan ini hanya mengenali satu nama yang sangat dirindukan.</p>
+    </div>
+  </section>
+
+  <section id="treasures" class="screen">
+    <div class="eyebrow">akses kerajaan diberikan</div>
+    <div style="font-size:2.4rem;margin:8px 0">👑</div>
+    <h1 style="font-size:clamp(2rem,8vw,3rem)">Untuk Rahmi,<br>Ratu Hari Ini</h1>
+    <p>Selamat datang di tempat kecil yang kubuat khusus untukmu. 💗<br>Setiap lambang menyimpan satu kejutan. Buka semuanya, ya!</p>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Kejutan yang ditemukan</span><span id="progressText">0 dari 8</span></div>
+      <div class="progress"><span id="progressBar"></span></div>
+    </div>
+    <div id="treasureGrid" class="treasure-grid">
+      <button class="treasure" data-id="0"><span class="emoji">💌</span><span class="treasure-name">Surat Rahasia</span></button>
+      <button class="treasure" data-id="1"><span class="emoji">🌷</span><span class="treasure-name">Bunga untukmu</span></button>
+      <button class="treasure" data-id="2"><span class="emoji">🌙</span><span class="treasure-name">Doa di Malam Hari</span></button>
+      <button class="treasure" data-id="3"><span class="emoji">📖</span><span class="treasure-name">Cerita Kita</span></button>
+      <button class="treasure" data-id="4"><span class="emoji">🎁</span><span class="treasure-name">Janji Kecil</span></button>
+      <button class="treasure" data-id="5"><span class="emoji">🎶</span><span class="treasure-name">Lagu untuk Rahmi</span></button>
+      <button class="treasure" data-id="6"><span class="emoji">🫶</span><span class="treasure-name">Alasan Aku Sayang</span></button>
+      <button class="treasure" data-id="7"><span class="emoji">✨</span><span class="treasure-name">Harapan Usia 26</span></button>
+    </div>
+    <p id="allHint" class="tiny">Psst… ada satu rahasia yang hanya muncul setelah semua kejutan ditemukan.</p>
+    <div id="secret" class="secret">
+      <div class="eyebrow">harta karun terakhir</div>
+      <h2 style="margin-top:8px">Satu hal lagi, Sayang…</h2>
+      <p>Kalau semua kejutan sudah kamu buka, sentuh hati emas ini. 💛</p>
+      <button id="heartBtn" class="heart-btn" aria-label="Buka kejutan rahasia"><span>♥</span></button>
+      <div class="tiny">Dibuat dengan segenap hati, hanya untukmu.</div>
+    </div>
+    <footer>Made with love, by your very own prince ✦</footer>
+  </section>
+</main>
+
+<div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-card">
+    <button id="closeModal" class="close" aria-label="Tutup kejutan">×</button>
+    <div id="modalIcon" class="modal-icon">💌</div>
+    <div class="eyebrow">pesan khusus untukmu</div>
+    <h2 id="modalTitle">Sebuah kejutan</h2>
+    <p id="modalText"></p>
+    <button id="modalDone" class="btn">Aku sudah membacanya 💗</button>
+  </div>
+</div>
+
+<div id="finalModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="finalTitle">
+  <div class="modal-card" style="text-align:center">
+    <button id="closeFinal" class="close" aria-label="Tutup ucapan">×</button>
+    <div style="font-size:3rem;animation:float 3s infinite">💖</div>
+    <div class="eyebrow">hari paling istimewa</div>
+    <h2 id="finalTitle" style="font-size:2rem">Happy 26th Birthday, My Princess!</h2>
+    <p id="finalText">Selamat ulang tahun yang ke-26, Rahmi Puji Astuti, kesayanganku. ❤️
+
+Semoga di usia barumu, dunia lebih lembut kepadamu, langkahmu selalu dimudahkan, dan hal-hal baik menemukan jalan menuju hatimu. Semoga semua mimpi yang kamu simpan satu per satu menjadi nyata.
+
+Terima kasih sudah hadir di hidupku. Kamu bukan cuma seseorang yang aku sayang, tetapi juga seseorang yang membuat hari-hari biasa terasa lebih berarti. Aku mungkin tidak selalu sempurna dalam menunjukkan rasa sayangku, tapi aku ingin terus belajar menjadi tempat pulang yang nyaman untukmu—tempat kamu bisa tertawa, bercerita, dan menjadi dirimu sendiri.
+
+Kalau suatu hari nanti kamu membaca ini lagi, ingatlah: di antara banyak hal indah di dunia, mengenalmu adalah salah satu keberuntunganku yang paling besar. Aku tidak bisa menjanjikan setiap hari akan selalu mudah, tapi aku ingin tetap menggenggam tanganmu saat kita melewatinya.
+
+Happy birthday, my love. Semoga usia 26 membawa lebih banyak tawa, ketenangan, petualangan, dan alasan untuk bahagia. Dan semoga aku masih diberi kesempatan untuk merayakan banyak ulang tahunmu setelah ini.
+
+With all my love,
+Your Prince,
+Nicky~</p>
+    <button id="finalCloseBtn" class="btn">Peluk virtual untuk pangeranmu 🫂</button>
+    <div class="tiny" style="margin-top:15px">♕ Yours, in every little fairytale ♕</div>
+  </div>
+</div>
+
+<script>
+const starField = document.getElementById('stars');
+for (let i=0;i<55;i++){
+  const s=document.createElement('span');s.className='star';s.textContent=['✦','·','✧','⋆'][Math.floor(Math.random()*4)];
+  s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.fontSize=(8+Math.random()*13)+'px';s.style.animationDelay=(Math.random()*3)+'s';starField.appendChild(s);
+}
+const surprises = [
+  {icon:'💌',title:'Surat Rahasia',text:'Hai, Rahmi. Kalau kamu sedang membaca ini, berarti kamu sudah menemukan surat pertamaku. Aku cuma mau bilang: kamu itu istimewa, bahkan di hari-hari ketika kamu merasa biasa saja. Semoga kamu tidak lupa betapa berharganya dirimu. Dan kalau kamu lupa, biar aku yang mengingatkanmu. ❤️'},
+  {icon:'🌷',title:'Bunga untukmu',text:'Kalau aku bisa mengirimkan satu taman bunga lewat layar ini, aku akan memilih bunga-bunga paling cantik—meski tetap saja, semuanya akan kalah oleh senyummu. Jadi untuk sekarang, terimalah bunga virtual ini. Semoga harimu tumbuh seindah bunga yang mekar setelah hujan. 🌷'},
+  {icon:'🌙',title:'Doa di Malam Hari',text:'Di usiamu yang ke-26, aku berdoa semoga hatimu selalu tenang, tubuhmu sehat, rezekimu lapang, dan langkahmu dikelilingi orang-orang yang tulus. Semoga kamu selalu punya keberanian untuk mengejar yang kamu impikan, dan tempat aman untuk beristirahat saat lelah. Aku akan ikut mendoakanmu, bahkan dalam diam. 🌙'},
+  {icon:'📖',title:'Cerita Kita',text:'Aku suka membayangkan hubungan kita sebagai sebuah buku. Ada halaman yang penuh tawa, ada yang mungkin membuat kita belajar, dan ada halaman kosong yang belum kita tulis. Aku tidak tahu persis bagaimana ceritanya nanti, tetapi aku ingin mengisinya pelan-pelan bersamamu—dengan kejujuran, usaha, dan banyak kenangan baik. 📖'},
+  {icon:'🎁',title:'Janji Kecil',text:'Aku tidak berjanji akan selalu tahu jawaban untuk semua masalahmu. Tapi aku ingin berusaha mendengarkan sebelum menghakimi, meminta maaf saat salah, merayakan keberhasilanmu, dan tetap menyemangatimu ketika sesuatu tidak berjalan sesuai rencana. Bukan janji menjadi sempurna, melainkan janji untuk terus belajar mencintaimu dengan lebih baik. 🎁'},
+  {icon:'🎶',title:'Lagu untuk Rahmi',text:'Kalau kisah kita adalah lagu, mungkin melodinya tidak selalu sama—kadang ceria, kadang pelan, kadang sedikit berantakan. Tapi aku ingin tetap menyanyikannya bersamamu. Kamu boleh memilih lagu yang ingin kita dengarkan berikutnya; aku akan senang kalau suatu hari nanti lagu itu mengingatkanmu pada kita. 🎶'},
+  {icon:'🫶',title:'Alasan Aku Sayang',text:'Aku sayang kamu bukan hanya karena momen-momen manis. Aku juga menghargai caramu menjadi dirimu sendiri, hal-hal kecil yang mungkin tidak kamu sadari, dan cerita-cerita yang membuatmu menjadi Rahmi. Aku ingin mengenalmu terus—bukan hanya versi dirimu yang sedang bahagia, tapi juga dirimu yang sedang lelah, bingung, atau butuh ditemani. 🫶'},
+  {icon:'✨',title:'Harapan Usia 26',text:'Untuk usia 26: semoga lebih banyak kabar baik, tawa yang tulus, mimpi yang tercapai, perjalanan yang menyenangkan, dan hari-hari ketika kamu bangga pada dirimu sendiri. Jangan terlalu keras pada dirimu, ya. Kamu tidak harus menyelesaikan semuanya sekaligus. Satu langkah kecil tetaplah sebuah kemajuan. Aku mendukungmu, selalu. ✨'}
+];
+const opened = new Set();
+const modal=document.getElementById('modal');
+let activeId=null;
+document.getElementById('entryForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const name=document.getElementById('fullName').value.trim().toLocaleLowerCase('id-ID').replace(/\s+/g,' ');
+  const day=document.getElementById('birthDay').value;\n  const month=document.getElementById('birthMonth').value;\n  const year=document.getElementById('birthYear').value;\n  const date=year+'-'+month+'-'+day;
+  if(name==='rahmi puji astuti' && date==='2000-10-22'){
+    document.getElementById('error').classList.remove('show');
+    document.getElementById('welcome').classList.remove('active');
+    document.getElementById('treasures').classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+    confetti(22);
+  }else{
+    document.getElementById('error').classList.add('show');
+    document.getElementById('error').textContent='Maaf, kamu bukan tuan putri kami. Maka kamu tidak diizinkan masuk.';
+  }
+});
+document.querySelectorAll('.treasure').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    activeId=Number(btn.dataset.id);const item=surprises[activeId];
+    document.getElementById('modalIcon').textContent=item.icon;
+    document.getElementById('modalTitle').textContent=item.title;
+    document.getElementById('modalText').textContent=item.text;
+    modal.classList.add('show');document.body.style.overflow='hidden';
+  });
+});
+function closeSurprise(){
+  modal.classList.remove('show');document.body.style.overflow='';
+  if(activeId!==null){
+    opened.add(activeId);
+    document.querySelector('.treasure[data-id="'+activeId+'"]').classList.add('opened');
+    updateProgress();
+    activeId=null;
+  }
+}
+document.getElementById('closeModal').addEventListener('click',closeSurprise);
+document.getElementById('modalDone').addEventListener('click',closeSurprise);
+modal.addEventListener('click',e=>{if(e.target===modal)closeSurprise()});
+function updateProgress(){
+  const n=opened.size;document.getElementById('progressText').textContent=n+' dari '+surprises.length;
+  document.getElementById('progressBar').style.width=(n/surprises.length*100)+'%';
+  if(n===surprises.length){
+    document.getElementById('secret').classList.add('visible');
+    document.getElementById('allHint').textContent='Kamu berhasil menemukan semuanya! Ada satu hati emas menunggumu di bawah. 💛';
+    confetti(38);
+  }
+}
+document.getElementById('heartBtn').addEventListener('click',()=>{
+  document.getElementById('finalModal').classList.add('show');document.body.style.overflow='hidden';confetti(65);
+});
+function closeFinal(){document.getElementById('finalModal').classList.remove('show');document.body.style.overflow='';}
+document.getElementById('closeFinal').addEventListener('click',closeFinal);
+document.getElementById('finalCloseBtn').addEventListener('click',closeFinal);
+document.getElementById('finalModal').addEventListener('click',e=>{if(e.target.id==='finalModal')closeFinal()});
+function confetti(count){
+  const pieces=['✦','♥','✧','💗','✨'];
+  for(let i=0;i<count;i++){
+    const el=document.createElement('span');el.className='confetti';el.textContent=pieces[Math.floor(Math.random()*pieces.length)];
+    el.style.left=Math.random()*100+'vw';el.style.fontSize=(12+Math.random()*17)+'px';el.style.animationDuration=(2.2+Math.random()*2.8)+'s';el.style.animationDelay=(Math.random()*.8)+'s';el.style.color=['#ffd778','#ffb8d2','#fff0bd','#d9c2ff'][Math.floor(Math.random()*4)];
+    document.body.appendChild(el);setTimeout(()=>el.remove(),6000);
+  }
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){if(modal.classList.contains('show'))closeSurprise();else closeFinal();}
+});
+</script>
+</body>
+</html>

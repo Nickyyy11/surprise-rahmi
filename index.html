@@ -153,10 +153,10 @@ footer{font: .72rem system-ui,sans-serif;color:#a99abf;text-align:center;margin-
         <span id="musicButtonLabel">Putar lagu kita</span>
         <span class="music-note">♪</span>
       </button>
-      <p id="musicStatus" class="tiny" role="status" aria-live="polite">Gunakan pemutar YouTube di bawah, atau sentuh tombol untuk memuat lagu dari awal.</p>
-      <div id="musicFrame" class="music-frame" style="position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:14px;background:#100b28;margin-top:12px">
-        <iframe id="musicPlayer" title="Lagu untuk Rahmi" width="100%" height="220" style="position:absolute;inset:0;width:100%;height:100%;border:0" src="https://www.youtube-nocookie.com/embed/fTc5tuEn6_U?playsinline=1&rel=0" allow="autoplay; encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
+      <p id="musicStatus" class="tiny" role="status" aria-live="polite">Lagu akan dicoba diputar setelah kamu masuk. Jika belum terdengar, tekan tombol di atas.</p>
+      <audio id="birthdaySong" preload="auto" playsinline>
+        <source src="everytime.mp3" type="audio/mpeg">
+      </audio>
     </div>
     <div class="progress-wrap">
       <div class="progress-label"><span>Kejutan yang ditemukan</span><span id="progressText">0 dari 8</span></div>
@@ -238,28 +238,113 @@ const surprises = [
 const opened = new Set();
 const modal=document.getElementById('modal');
 let activeId=null;
-const musicPlayer=document.getElementById('musicPlayer');
+const birthdaySong=document.getElementById('birthdaySong');
 const musicToggle=document.getElementById('musicToggle');
 const musicButtonIcon=document.getElementById('musicButtonIcon');
 const musicButtonLabel=document.getElementById('musicButtonLabel');
 const musicStatus=document.getElementById('musicStatus');
-const songEmbedBase='https://www.youtube-nocookie.com/embed/fTc5tuEn6_U?playsinline=1&rel=0';
 let musicPlaying=false;
 function setMusicUi(playing,message){
   musicPlaying=playing;
   musicToggle.classList.toggle('playing',playing);
   musicToggle.setAttribute('aria-pressed',String(playing));
-  musicButtonIcon.textContent=playing?'↻':'▶';
-  musicButtonLabel.textContent=playing?'Putar ulang lagu':'Putar lagu kita';
+  musicButtonIcon.textContent=playing?'Ⅱ':'▶';
+  musicButtonLabel.textContent=playing?'Jeda lagu':'Putar lagu kita';
   if(message) musicStatus.textContent=message;
 }
-function startSongFromBeginning(){
-  musicPlayer.src=songEmbedBase+'&autoplay=1&start=0';
-  setMusicUi(true,'Lagu dimuat ulang dari awal. Jika belum terdengar, tekan play pada pemutar YouTube.');
+async function playSong(fromBeginning=false){
+  try{
+    if(fromBeginning) birthdaySong.currentTime=0;
+    await birthdaySong.play();
+    setMusicUi(true,'Sedang memutar lagu untukmu. 💗');
+  }catch(error){
+    setMusicUi(false,'Browser belum mengizinkan lagu diputar otomatis. Sentuh “Putar lagu kita” untuk mulai mendengarkan.');
+  }
 }
-musicToggle.addEventListener('click',function(){
-  startSongFromBeginning();
+function startSongFromBeginning(){
+  playSong(true);
+}
+musicToggle.addEventListener('click',async function(){
+  if(!birthdaySong.paused){
+    birthdaySong.pause();
+    setMusicUi(false,'Lagu dijeda. Tekan tombol untuk melanjutkan.');
+  }else{
+    await playSong(false);
+  }
 });
+birthdaySong.addEventListener('play',()=>setMusicUi(true,'Sedang memutar lagu untukmu. 💗'));
+birthdaySong.addEventListener('pause',()=>{if(!birthdaySong.ended)setMusicUi(false,'Lagu dijeda. Tekan tombol untuk melanjutkan.')});
+birthdaySong.addEventListener('ended',()=>setMusicUi(false,'Lagu selesai. Kamu bisa memutarnya lagi kapan saja.'));
+birthdaySong.addEventListener('error',()=>setMusicUi(false,'File lagu tidak ditemukan. Pastikan everytime.mp3 diunggah ke repository yang sama dengan index.html.'));
+// Form login: validasi nama dan tanggal lahir untuk semua browser HP.
+const entryForm=document.getElementById('entryForm');
+const fullNameInput=document.getElementById('fullName');
+const birthDateInput=document.getElementById('birthDate');
+const pickDateBtn=document.getElementById('pickDateBtn');
+if(pickDateBtn){
+  pickDateBtn.addEventListener('click',()=>{
+    try{
+      if(typeof birthDateInput.showPicker==='function') birthDateInput.showPicker();
+      else { birthDateInput.focus(); birthDateInput.click(); }
+    }catch(e){ birthDateInput.focus(); birthDateInput.click(); }
+  });
+}
+entryForm.addEventListener('submit',function(e){
+  e.preventDefault();
+  const name=fullNameInput.value.trim().toLocaleLowerCase('id-ID').replace(/\s+/g,' ');
+  const date=birthDateInput.value;
+  if(name==='rahmi puji astuti' && date==='2000-10-22'){
+    document.getElementById('error').classList.remove('show');
+    document.getElementById('welcome').classList.remove('active');
+    document.getElementById('treasures').classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+    startSongFromBeginning();
+    confetti(22);
+  }else{
+    const error=document.getElementById('error');
+    error.textContent='Maaf, kamu bukan tuan putri kami. Maka kamu tidak diizinkan masuk.';
+    error.classList.add('show');
+  }
+});
+
+// Interaksi delapan kejutan dan progres.
+document.querySelectorAll('.treasure').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    activeId=Number(btn.dataset.id);
+    const item=surprises[activeId];
+    if(!item)return;
+    document.getElementById('modalIcon').textContent=item.icon;
+    document.getElementById('modalTitle').textContent=item.title;
+    document.getElementById('modalText').textContent=item.text;
+    modal.classList.add('show');
+    document.body.style.overflow='hidden';
+  });
+});
+function closeSurprise(){
+  modal.classList.remove('show');
+  document.body.style.overflow='';
+  if(activeId!==null){
+    opened.add(activeId);
+    const button=document.querySelector('.treasure[data-id="'+activeId+'"]');
+    if(button)button.classList.add('opened');
+    updateProgress();
+    activeId=null;
+  }
+}
+document.getElementById('closeModal').addEventListener('click',closeSurprise);
+document.getElementById('modalDone').addEventListener('click',closeSurprise);
+modal.addEventListener('click',e=>{if(e.target===modal)closeSurprise()});
+function updateProgress(){
+  const n=opened.size;
+  document.getElementById('progressText').textContent=n+' dari '+surprises.length;
+  document.getElementById('progressBar').style.width=(n/surprises.length*100)+'%';
+  if(n===surprises.length){
+    document.getElementById('secret').classList.add('visible');
+    document.getElementById('allHint').textContent='Kamu berhasil menemukan semuanya! Ada satu hati emas menunggumu di bawah. 💛';
+    confetti(38);
+  }
+}
+
 document.getElementById('heartBtn').addEventListener('click',()=>{
   startSongFromBeginning();
   document.getElementById('finalModal').classList.add('show');document.body.style.overflow='hidden';confetti(65);

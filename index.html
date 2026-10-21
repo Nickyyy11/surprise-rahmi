@@ -96,6 +96,26 @@ footer{font: .72rem system-ui,sans-serif;color:#a99abf;text-align:center;margin-
 }
 @media(min-width:600px){main{padding-top:28px}.treasure-grid{gap:15px}.treasure{min-height:128px}.treasure .emoji{font-size:2.3rem}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}}
+
+/* Galeri foto ditambahkan terpisah agar fitur yang sudah ada tetap utuh. */
+.photo-gallery{width:100%;max-width:680px;margin:28px auto 22px;padding:20px 14px 18px;border:1px solid #ffd77840;border-radius:24px;background:linear-gradient(145deg,#ffffff0d,#ffffff04);box-shadow:0 16px 45px #08031c33}
+.photo-gallery-heading{margin-bottom:6px}
+.photo-gallery-intro{font: .84rem/1.55 system-ui,sans-serif;color:#cfc0df;margin:0 auto 17px;max-width:440px}
+.photo-gallery-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.photo-card{display:block;position:relative;min-width:0;padding:5px;border:1px solid #ffd77855;border-radius:17px;background:linear-gradient(145deg,#ffffff16,#ffffff05);color:var(--cream);text-align:left;overflow:hidden;transition:transform .2s,border-color .2s,box-shadow .2s}
+.photo-card:hover{transform:translateY(-2px);border-color:#ffd778aa;box-shadow:0 10px 24px #08031c44}
+.photo-card:focus-visible{outline:3px solid white;outline-offset:3px}
+.photo-card img{display:block;width:100%;aspect-ratio:2/3;object-fit:cover;object-position:center;border-radius:12px;background:#1b1237}
+.photo-card-caption{display:block;padding:9px 6px 5px;font: .76rem/1.35 system-ui,sans-serif;color:#f3e5ff;text-align:center}
+.photo-gallery-note{margin-top:13px;font:.74rem/1.5 system-ui,sans-serif;color:#bfb1d5}
+.photo-lightbox{position:fixed;inset:0;z-index:15;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:20px 14px;background:#09051df2;backdrop-filter:blur(9px)}
+.photo-lightbox.show{display:flex}
+.photo-lightbox-image{display:block;max-width:min(100%,850px);max-height:calc(100svh - 115px);width:auto;height:auto;object-fit:contain;border:1px solid #ffd77870;border-radius:14px;box-shadow:0 15px 50px #0008}
+.photo-lightbox-caption{margin:0;text-align:center;font: .9rem/1.4 system-ui,sans-serif;color:#f7e8c7}
+.photo-lightbox-close{position:absolute;top:max(12px,env(safe-area-inset-top));right:14px;width:42px;height:42px;border:1px solid #ffd7788c;border-radius:50%;background:#342052;color:#fff7ef;font-size:1.5rem;line-height:1}
+@media(max-width:380px){.photo-gallery{padding:16px 10px}.photo-gallery-grid{gap:8px}.photo-card{padding:4px}.photo-card-caption{font-size:.7rem}}
+@media(prefers-reduced-motion:reduce){.photo-card{transition:none}}
+
 </style>
 </head>
 <body>
@@ -120,7 +140,7 @@ footer{font: .72rem system-ui,sans-serif;color:#a99abf;text-align:center;margin-
     <p>Di sebuah kerajaan yang menyimpan kejutan<br>khusus untuk seseorang yang paling istimewa.</p>
     <div class="panel">
       <div class="crown">♕</div>
-      <h2 style="font-size:1.55rem;margin-top:8px">Kerajaan Soluna</h2>
+      <h2 style="font-size:1.55rem;margin-top:8px">Kerajaan XXX</h2>
       <p style="font-size:.93rem">Sebelum gerbang dibuka, izinkan kami memastikan bahwa yang datang adalah tuan putri yang kami tunggu.</p>
       <form id="entryForm">
         <div class="field"><label for="fullName">Nama lengkapmu</label><input id="fullName" name="fullName" placeholder="Masukkan nama lengkap" autocomplete="name" required></div>
@@ -172,6 +192,36 @@ footer{font: .72rem system-ui,sans-serif;color:#a99abf;text-align:center;margin-
       <button class="treasure" data-id="6"><span class="emoji">🫶</span><span class="treasure-name">Alasan Aku Sayang</span></button>
       <button class="treasure" data-id="7"><span class="emoji">✨</span><span class="treasure-name">Harapan Usia 26</span></button>
     </div>
+
+    <section class="photo-gallery" aria-labelledby="photoGalleryTitle">
+      <div class="eyebrow">potret kecil, kenangan besar</div>
+      <h2 id="photoGalleryTitle" class="photo-gallery-heading" style="font-size:clamp(1.45rem,5.5vw,2rem)">Galeri Kita 💜</h2>
+      <p class="photo-gallery-intro">Sedikit potret dari kerajaan kecil kita. Sentuh fotonya untuk melihat lebih jelas.</p>
+      <div class="photo-gallery-grid">
+        <button class="photo-card" type="button" data-photo="galeri-01.png" data-caption="Potret Kerajaan I" aria-label="Perbesar foto Potret Kerajaan I">
+          <img src="galeri-01.png" alt="Nicky dan Rahmi dalam busana kerajaan merah marun dan emas" loading="lazy">
+          <span class="photo-card-caption">Potret Kerajaan I</span>
+        </button>
+        <button class="photo-card" type="button" data-photo="galeri-02.png" data-caption="Momen Berdua" aria-label="Perbesar foto Momen Berdua">
+          <img src="galeri-02.png" alt="Nicky dan Rahmi membentuk hati dengan tangan" loading="lazy">
+          <span class="photo-card-caption">Momen Berdua</span>
+        </button>
+        <button class="photo-card" type="button" data-photo="galeri-03.png" data-caption="Potret Ungu I" aria-label="Perbesar foto Potret Ungu I">
+          <img src="galeri-03.png" alt="Potret Nicky dan Rahmi dengan busana kerajaan ungu" loading="lazy">
+          <span class="photo-card-caption">Potret Ungu I</span>
+        </button>
+        <button class="photo-card" type="button" data-photo="galeri-04.png" data-caption="Potret Ungu II" aria-label="Perbesar foto Potret Ungu II">
+          <img src="galeri-04.png" alt="Potret kerajaan ungu Nicky dan Rahmi" loading="lazy">
+          <span class="photo-card-caption">Potret Ungu II</span>
+        </button>
+        <button class="photo-card" type="button" data-photo="galeri-05.png" data-caption="Selalu Berdua" aria-label="Perbesar foto Selalu Berdua">
+          <img src="galeri-05.png" alt="Potret dekat Nicky dan Rahmi dengan mahkota dan busana kerajaan" loading="lazy">
+          <span class="photo-card-caption">Selalu Berdua</span>
+        </button>
+      </div>
+      <p class="photo-gallery-note">Setiap foto adalah bagian kecil dari cerita kita. ✦</p>
+    </section>
+
     <p id="allHint" class="tiny">Psst… ada satu rahasia yang hanya muncul setelah semua kejutan ditemukan.</p>
     <div id="secret" class="secret">
       <div class="eyebrow">harta karun terakhir</div>
@@ -217,6 +267,13 @@ Nicky~</p>
     <button id="finalCloseBtn" class="btn">Peluk virtual untuk pangeranmu 🫂</button>
     <div class="tiny" style="margin-top:15px">♕ Yours, in every little fairytale ♕</div>
   </div>
+</div>
+
+
+<div id="photoLightbox" class="photo-lightbox" role="dialog" aria-modal="true" aria-label="Galeri foto diperbesar" aria-hidden="true">
+  <button id="photoLightboxClose" class="photo-lightbox-close" type="button" aria-label="Tutup foto">×</button>
+  <img id="photoLightboxImage" class="photo-lightbox-image" src="" alt="Foto galeri diperbesar">
+  <p id="photoLightboxCaption" class="photo-lightbox-caption"></p>
 </div>
 
 <script>
@@ -364,6 +421,46 @@ function confetti(count){
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){if(modal.classList.contains('show'))closeSurprise();else closeFinal();}
 });
+
+// Galeri foto: interaksi terpisah, tanpa mengubah alur fitur lama.
+(function setupPhotoGallery(){
+  const lightbox = document.getElementById('photoLightbox');
+  const enlargedImage = document.getElementById('photoLightboxImage');
+  const caption = document.getElementById('photoLightboxCaption');
+  const closeButton = document.getElementById('photoLightboxClose');
+  if (!lightbox || !enlargedImage || !caption || !closeButton) return;
+
+  function closeGalleryPhoto(){
+    lightbox.classList.remove('show');
+    lightbox.setAttribute('aria-hidden', 'true');
+    enlargedImage.removeAttribute('src');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.photo-card').forEach(function(card){
+    card.addEventListener('click', function(){
+      const imagePath = card.getAttribute('data-photo');
+      const imageCaption = card.getAttribute('data-caption') || 'Galeri Kita';
+      if (!imagePath) return;
+      enlargedImage.src = imagePath;
+      enlargedImage.alt = imageCaption;
+      caption.textContent = imageCaption;
+      lightbox.classList.add('show');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      closeButton.focus();
+    });
+  });
+
+  closeButton.addEventListener('click', closeGalleryPhoto);
+  lightbox.addEventListener('click', function(event){
+    if (event.target === lightbox) closeGalleryPhoto();
+  });
+  document.addEventListener('keydown', function(event){
+    if (event.key === 'Escape' && lightbox.classList.contains('show')) closeGalleryPhoto();
+  });
+})();
+
 </script>
 </body>
 </html>

@@ -153,9 +153,9 @@ footer{font: .72rem system-ui,sans-serif;color:#a99abf;text-align:center;margin-
         <span id="musicButtonLabel">Putar lagu kita</span>
         <span class="music-note">♪</span>
       </button>
-      <p id="musicStatus" class="tiny" role="status" aria-live="polite">Musik akan mencoba diputar setelah kamu masuk. Jika belum terdengar, sentuh tombol di atas.</p>
-      <div class="music-frame" aria-hidden="true">
-        <iframe id="musicPlayer" title="Lagu untuk Rahmi" width="1" height="1" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none" src="about:blank" allow="autoplay; encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      <p id="musicStatus" class="tiny" role="status" aria-live="polite">Gunakan pemutar YouTube di bawah, atau sentuh tombol untuk memuat lagu dari awal.</p>
+      <div id="musicFrame" class="music-frame" style="position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:14px;background:#100b28;margin-top:12px">
+        <iframe id="musicPlayer" title="Lagu untuk Rahmi" width="100%" height="220" style="position:absolute;inset:0;width:100%;height:100%;border:0" src="https://www.youtube-nocookie.com/embed/fTc5tuEn6_U?playsinline=1&rel=0" allow="autoplay; encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
     </div>
     <div class="progress-wrap">
@@ -243,129 +243,23 @@ const musicToggle=document.getElementById('musicToggle');
 const musicButtonIcon=document.getElementById('musicButtonIcon');
 const musicButtonLabel=document.getElementById('musicButtonLabel');
 const musicStatus=document.getElementById('musicStatus');
-let ytPlayer=null;
-let ytApiReady=false;
-let musicRequested=false;
+const songEmbedBase='https://www.youtube-nocookie.com/embed/fTc5tuEn6_U?playsinline=1&rel=0';
 let musicPlaying=false;
-function setMusicUi(playing, message){
+function setMusicUi(playing,message){
   musicPlaying=playing;
   musicToggle.classList.toggle('playing',playing);
   musicToggle.setAttribute('aria-pressed',String(playing));
-  musicButtonIcon.textContent=playing?'Ⅱ':'▶';
-  musicButtonLabel.textContent=playing?'Jeda lagu':'Putar lagu kita';
+  musicButtonIcon.textContent=playing?'↻':'▶';
+  musicButtonLabel.textContent=playing?'Putar ulang lagu':'Putar lagu kita';
   if(message) musicStatus.textContent=message;
 }
-function loadYouTubeApi(){
-  if(window.YT && window.YT.Player){createYouTubePlayer();return;}
-  if(document.getElementById('youtube-iframe-api')) return;
-  const tag=document.createElement('script');
-  tag.id='youtube-iframe-api';tag.src='https://www.youtube.com/iframe_api';
-  document.head.appendChild(tag);
-}
-window.onYouTubeIframeAPIReady=function(){ytApiReady=true;createYouTubePlayer();};
-function createYouTubePlayer(){
-  if(!window.YT || !window.YT.Player || ytPlayer) return;
-  ytPlayer=new YT.Player('musicPlayer',{
-    width:'1',height:'1',videoId:'fTc5tuEn6_U',
-    playerVars:{autoplay:0,playsinline:1,rel:0},
-    events:{
-      onReady:function(){
-        if(musicRequested){try{ytPlayer.seekTo(0,true);ytPlayer.playVideo();}catch(e){}}
-      },
-      onStateChange:function(event){
-        if(event.data===YT.PlayerState.PLAYING){
-          setMusicUi(true,'Sedang memutar lagu untukmu. 💗');
-        }else if(event.data===YT.PlayerState.PAUSED){
-          setMusicUi(false,'Lagu dijeda. Tekan tombol untuk melanjutkan.');
-        }else if(event.data===YT.PlayerState.ENDED){
-          setMusicUi(false,'Lagu selesai. Kamu bisa memutarnya lagi kapan saja.');
-        }
-      },
-      onError:function(){
-        setMusicUi(false,'Lagu belum bisa diputar. Coba tekan tombol lagi atau periksa koneksi internetmu.');
-        musicStatus.classList.add('music-status-error');
-      }
-    }
-  });
-}
 function startSongFromBeginning(){
-  musicRequested=true;
-  musicStatus.classList.remove('music-status-error');
-  musicStatus.textContent='Mencoba memutar lagu dari awal…';
-  if(ytPlayer){
-    try{ytPlayer.seekTo(0,true);ytPlayer.playVideo();}catch(e){setMusicUi(false,'Tekan tombol Putar lagu kita jika musik belum terdengar.');}
-  }else{
-    loadYouTubeApi();
-    setMusicUi(false,'Jika musik tidak mulai otomatis, sentuh tombol “Putar lagu kita”.');
-  }
+  musicPlayer.src=songEmbedBase+'&autoplay=1&start=0';
+  setMusicUi(true,'Lagu dimuat ulang dari awal. Jika belum terdengar, tekan play pada pemutar YouTube.');
 }
 musicToggle.addEventListener('click',function(){
-  musicStatus.classList.remove('music-status-error');
-  if(!ytPlayer){musicRequested=true;musicStatus.textContent='Menyiapkan pemutar lagu…';loadYouTubeApi();return;}
-  try{
-    if(musicPlaying){ytPlayer.pauseVideo();}
-    else{ytPlayer.playVideo();}
-  }catch(e){
-    musicStatus.textContent='Lagu belum bisa diputar. Coba sentuh tombol sekali lagi.';
-  }
+  startSongFromBeginning();
 });
-loadYouTubeApi();
-document.getElementById('entryForm').addEventListener('submit',function(e){
-  e.preventDefault();
-  const name=document.getElementById('fullName').value.trim().toLocaleLowerCase('id-ID').replace(/\s+/g,' ');
-  const date=document.getElementById('birthDate').value;
-  if(name==='rahmi puji astuti' && date==='2000-10-22'){
-    document.getElementById('error').classList.remove('show');
-    document.getElementById('welcome').classList.remove('active');
-    document.getElementById('treasures').classList.add('active');
-    startSongFromBeginning();
-    window.scrollTo({top:0,behavior:'smooth'});
-    confetti(22);
-  }else{
-    document.getElementById('error').classList.add('show');
-    document.getElementById('error').textContent='Maaf, kamu bukan tuan putri kami. Maka kamu tidak diizinkan masuk.';
-  }
-});
-const birthDateInput=document.getElementById('birthDate');
-document.getElementById('pickDateBtn').addEventListener('click',()=>{
-  try {
-    if (typeof birthDateInput.showPicker === 'function') birthDateInput.showPicker();
-    else { birthDateInput.focus(); birthDateInput.click(); }
-  } catch (err) {
-    birthDateInput.focus();
-    birthDateInput.click();
-  }
-});
-document.querySelectorAll('.treasure').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    activeId=Number(btn.dataset.id);const item=surprises[activeId];
-    document.getElementById('modalIcon').textContent=item.icon;
-    document.getElementById('modalTitle').textContent=item.title;
-    document.getElementById('modalText').textContent=item.text;
-    modal.classList.add('show');document.body.style.overflow='hidden';
-  });
-});
-function closeSurprise(){
-  modal.classList.remove('show');document.body.style.overflow='';
-  if(activeId!==null){
-    opened.add(activeId);
-    document.querySelector('.treasure[data-id="'+activeId+'"]').classList.add('opened');
-    updateProgress();
-    activeId=null;
-  }
-}
-document.getElementById('closeModal').addEventListener('click',closeSurprise);
-document.getElementById('modalDone').addEventListener('click',closeSurprise);
-modal.addEventListener('click',e=>{if(e.target===modal)closeSurprise()});
-function updateProgress(){
-  const n=opened.size;document.getElementById('progressText').textContent=n+' dari '+surprises.length;
-  document.getElementById('progressBar').style.width=(n/surprises.length*100)+'%';
-  if(n===surprises.length){
-    document.getElementById('secret').classList.add('visible');
-    document.getElementById('allHint').textContent='Kamu berhasil menemukan semuanya! Ada satu hati emas menunggumu di bawah. 💛';
-    confetti(38);
-  }
-}
 document.getElementById('heartBtn').addEventListener('click',()=>{
   startSongFromBeginning();
   document.getElementById('finalModal').classList.add('show');document.body.style.overflow='hidden';confetti(65);

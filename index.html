@@ -116,6 +116,31 @@ footer{font: .72rem system-ui,sans-serif;color:#a99abf;text-align:center;margin-
 @media(max-width:380px){.photo-gallery{padding:16px 10px}.photo-gallery-grid{gap:8px}.photo-card{padding:4px}.photo-card-caption{font-size:.7rem}}
 @media(prefers-reduced-motion:reduce){.photo-card{transition:none}}
 
+
+/* Pelukan virtual kerajaan: tambahan terisolasi. */
+.hug-scene{position:fixed;inset:0;z-index:30;display:none;align-items:center;justify-content:center;padding:18px;background:radial-gradient(ellipse at 50% 25%,#56366df5,#100b28f7);backdrop-filter:blur(9px)}
+.hug-scene.show{display:flex;animation:rise .45s ease}
+.hug-card{position:relative;overflow:hidden;width:100%;max-width:470px;padding:28px 18px 24px;text-align:center;border:1px solid #ffd77888;border-radius:28px;background:linear-gradient(150deg,#422a5b,#1b1237);box-shadow:0 25px 80px #0008}
+.hug-crown{font-size:2rem;color:var(--gold);animation:glow 1.8s infinite}
+.hug-stage{height:190px;display:flex;align-items:center;justify-content:center;position:relative;margin:8px auto 12px;max-width:350px}
+.hug-person{position:absolute;bottom:18px;width:112px;height:132px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;filter:drop-shadow(0 8px 12px #09051c66)}
+.hug-person.prince{left:calc(50% - 116px);animation:princeHug 2.2s ease-in-out infinite alternate}
+.hug-person.princess{right:calc(50% - 116px);animation:princessHug 2.2s ease-in-out infinite alternate}
+.hug-head{width:66px;height:66px;border-radius:50%;display:grid;place-items:center;font-size:2.5rem;z-index:2;border:2px solid #ffe8b2;background:linear-gradient(145deg,#ffe6c9,#e8a6a5)}
+.hug-person.princess .hug-head{background:linear-gradient(145deg,#ffe8ef,#eab8ff)}
+.hug-body{width:88px;height:70px;margin-top:-5px;border:2px solid #ffe8b2;border-radius:30px 30px 18px 18px;background:linear-gradient(145deg,#8c5bb5,#40235e);position:relative}
+.hug-person.princess .hug-body{background:linear-gradient(145deg,#ffb8d2,#9f5c9e)}
+.hug-arm{position:absolute;top:12px;width:54px;height:18px;border:2px solid #ffe8b2;border-radius:99px;background:#dca8b4}
+.hug-person.prince .hug-arm{right:-26px;transform:rotate(-24deg);transform-origin:left center}
+.hug-person.princess .hug-arm{left:-26px;transform:rotate(24deg);transform-origin:right center}
+.hug-heart{position:absolute;top:18px;left:calc(50% - 15px);font-size:2rem;z-index:4;animation:heartPop 1.2s ease-in-out infinite}
+.hug-sparkle{position:absolute;color:var(--gold);font-size:1.3rem;animation:float 1.8s ease-in-out infinite}
+.hug-sparkle.s1{top:16px;left:17%}.hug-sparkle.s2{top:38px;right:15%;animation-delay:.4s}.hug-sparkle.s3{bottom:15px;left:27%;animation-delay:.8s}.hug-sparkle.s4{bottom:25px;right:25%;animation-delay:.2s}
+@keyframes princeHug{from{transform:translateX(0) rotate(-3deg)}to{transform:translateX(24px) rotate(2deg)}}
+@keyframes princessHug{from{transform:translateX(0) rotate(3deg)}to{transform:translateX(-24px) rotate(-2deg)}}
+@keyframes heartPop{0%,100%{transform:scale(.8);opacity:.75}50%{transform:scale(1.25);opacity:1}}
+@media(prefers-reduced-motion:reduce){.hug-person,.hug-heart,.hug-sparkle{animation:none!important}}
+
 </style>
 </head>
 <body>
@@ -193,16 +218,24 @@ footer{font: .72rem system-ui,sans-serif;color:#a99abf;text-align:center;margin-
       <button class="treasure" data-id="7"><span class="emoji">✨</span><span class="treasure-name">Harapan Usia 26</span></button>
     </div>
 
+    <div id="secret" class="secret">
+      <div class="eyebrow">harta karun terakhir</div>
+      <h2 style="margin-top:8px">Satu hal lagi, Sayang…</h2>
+      <p>Kalau semua kejutan sudah kamu buka, sentuh hati emas ini. 💛</p>
+      <button id="heartBtn" class="heart-btn" aria-label="Buka kejutan rahasia"><span>♥</span></button>
+      <div class="tiny">Dibuat dengan segenap hati, hanya untukmu.</div>
+    </div>
+
     <section class="photo-gallery" aria-labelledby="photoGalleryTitle">
       <div class="eyebrow">potret kecil, kenangan besar</div>
       <h2 id="photoGalleryTitle" class="photo-gallery-heading" style="font-size:clamp(1.45rem,5.5vw,2rem)">Galeri Kita 💜</h2>
       <p class="photo-gallery-intro">Sedikit potret dari kerajaan kecil kita. Sentuh fotonya untuk melihat lebih jelas.</p>
       <div class="photo-gallery-grid">
-        <button class="photo-card" type="button" data-photo="galeri-01.png" data-caption="Potret Kerajaan I" aria-label="Perbesar foto Potret Kerajaan I">
+        <button class="photo-card" type="button" data-photo="galeri-01.png" data-caption="Potret kerajaan I" aria-label="Perbesar foto Potret Kerajaan I">
           <img src="galeri-01.png" alt="Nicky dan Rahmi dalam busana kerajaan merah marun dan emas" loading="lazy">
           <span class="photo-card-caption">Potret Kerajaan I</span>
         </button>
-        <button class="photo-card" type="button" data-photo="galeri-02.png" data-caption="Momen Berdua" aria-label="Perbesar foto Momen Berdua">
+        <button class="photo-card" type="button" data-photo="galeri-02.png" data-caption="Potret kerajaan II" aria-label="Perbesar foto Momen Berdua">
           <img src="galeri-02.png" alt="Nicky dan Rahmi membentuk hati dengan tangan" loading="lazy">
           <span class="photo-card-caption">Momen Berdua</span>
         </button>
@@ -214,22 +247,12 @@ footer{font: .72rem system-ui,sans-serif;color:#a99abf;text-align:center;margin-
           <img src="galeri-04.png" alt="Potret kerajaan ungu Nicky dan Rahmi" loading="lazy">
           <span class="photo-card-caption">Potret Ungu II</span>
         </button>
-        <button class="photo-card" type="button" data-photo="galeri-05.png" data-caption="Selalu Berdua" aria-label="Perbesar foto Selalu Berdua">
-          <img src="galeri-05.png" alt="Potret dekat Nicky dan Rahmi dengan mahkota dan busana kerajaan" loading="lazy">
-          <span class="photo-card-caption">Selalu Berdua</span>
-        </button>
+      
       </div>
       <p class="photo-gallery-note">Setiap foto adalah bagian kecil dari cerita kita. ✦</p>
     </section>
 
     <p id="allHint" class="tiny">Psst… ada satu rahasia yang hanya muncul setelah semua kejutan ditemukan.</p>
-    <div id="secret" class="secret">
-      <div class="eyebrow">harta karun terakhir</div>
-      <h2 style="margin-top:8px">Satu hal lagi, Sayang…</h2>
-      <p>Kalau semua kejutan sudah kamu buka, sentuh hati emas ini. 💛</p>
-      <button id="heartBtn" class="heart-btn" aria-label="Buka kejutan rahasia"><span>♥</span></button>
-      <div class="tiny">Dibuat dengan segenap hati, hanya untukmu.</div>
-    </div>
     <footer>Made with love, by your very own prince ✦</footer>
   </section>
 </main>
@@ -274,6 +297,23 @@ Nicky~</p>
   <button id="photoLightboxClose" class="photo-lightbox-close" type="button" aria-label="Tutup foto">×</button>
   <img id="photoLightboxImage" class="photo-lightbox-image" src="" alt="Foto galeri diperbesar">
   <p id="photoLightboxCaption" class="photo-lightbox-caption"></p>
+</div>
+
+<div id="hugScene" class="hug-scene" role="dialog" aria-modal="true" aria-labelledby="hugTitle" aria-hidden="true">
+  <div class="hug-card">
+    <div class="hug-crown" aria-hidden="true">♕ ✦ ♕</div>
+    <div class="hug-stage" aria-hidden="true">
+      <span class="hug-sparkle s1">✦</span><span class="hug-sparkle s2">✧</span>
+      <span class="hug-sparkle s3">✦</span><span class="hug-sparkle s4">✧</span>
+      <div class="hug-person prince"><div class="hug-head">🤴</div><div class="hug-body"><span class="hug-arm"></span></div></div>
+      <div class="hug-person princess"><div class="hug-head">👸</div><div class="hug-body"><span class="hug-arm"></span></div></div>
+      <div class="hug-heart">💖</div>
+    </div>
+    <div class="eyebrow">dari pangeran untuk tuan putri</div>
+    <h2 id="hugTitle">Pelukan Kerajaan untuk Rahmi</h2>
+    <p>Kalau aku bisa menembus layar ini, aku sudah memelukmu erat sekarang. Anggap pelukan kecil ini sebagai pengingat bahwa kamu selalu disayangi. 💗</p>
+    <button id="closeHug" class="btn" type="button">Simpan pelukannya di hati 💛</button>
+  </div>
 </div>
 
 <script>
@@ -397,7 +437,7 @@ function updateProgress(){
   document.getElementById('progressBar').style.width=(n/surprises.length*100)+'%';
   if(n===surprises.length){
     document.getElementById('secret').classList.add('visible');
-    document.getElementById('allHint').textContent='Kamu berhasil menemukan semuanya! Ada satu hati emas menunggumu di bawah. 💛';
+    document.getElementById('allHint').textContent='Kamu berhasil menemukan semuanya! Ada satu hati emas menunggumu tepat di atas Galeri Kita. 💛';
     confetti(38);
   }
 }
@@ -408,7 +448,25 @@ document.getElementById('heartBtn').addEventListener('click',()=>{
 });
 function closeFinal(){document.getElementById('finalModal').classList.remove('show');document.body.style.overflow='';}
 document.getElementById('closeFinal').addEventListener('click',closeFinal);
-document.getElementById('finalCloseBtn').addEventListener('click',closeFinal);
+
+const hugScene=document.getElementById('hugScene');
+function showRoyalHug(){
+  document.getElementById('finalModal').classList.remove('show');
+  hugScene.classList.add('show');
+  hugScene.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+  confetti(70);
+  document.getElementById('closeHug').focus();
+}
+function closeRoyalHug(){
+  hugScene.classList.remove('show');
+  hugScene.setAttribute('aria-hidden','true');
+  document.body.style.overflow='';
+}
+document.getElementById('finalCloseBtn').addEventListener('click',showRoyalHug);
+document.getElementById('closeHug').addEventListener('click',closeRoyalHug);
+hugScene.addEventListener('click',e=>{if(e.target===hugScene)closeRoyalHug()});
+
 document.getElementById('finalModal').addEventListener('click',e=>{if(e.target.id==='finalModal')closeFinal()});
 function confetti(count){
   const pieces=['✦','♥','✧','💗','✨'];
@@ -419,7 +477,7 @@ function confetti(count){
   }
 }
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){if(modal.classList.contains('show'))closeSurprise();else closeFinal();}
+  if(e.key==='Escape'){if(hugScene.classList.contains('show'))closeRoyalHug();else if(modal.classList.contains('show'))closeSurprise();else closeFinal();}
 });
 
 // Galeri foto: interaksi terpisah, tanpa mengubah alur fitur lama.
